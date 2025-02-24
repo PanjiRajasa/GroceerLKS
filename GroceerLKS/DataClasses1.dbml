@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="grocerseeker" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\sqlexpress02;Initial Catalog=grocerseeker;Integrated Security=True;Trust Server Certificate=True" SettingsObjectName="GroceerLKS.Properties.Settings" SettingsPropertyName="grocerseekerConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.categories" Member="categories">
+    <Type Name="category">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="is_active" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="created_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Column Name="updated_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Association Name="category_product" Member="products" ThisKey="id" OtherKey="category_id" Type="product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.products" Member="products">
+    <Type Name="product">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="product_name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="category_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="unit_type" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="price_per_unit" Type="System.Decimal" DbType="Decimal(10,0)" CanBeNull="true" />
+      <Column Name="unit_stock" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="is_active" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="created_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Column Name="updated_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Column Name="deleted_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Association Name="product_transaction" Member="transactions" ThisKey="id" OtherKey="product_id" Type="transaction" />
+      <Association Name="category_product" Member="category" ThisKey="category_id" OtherKey="id" Type="category" IsForeignKey="true" />
+      <Association Name="user_product" Member="user" ThisKey="vendor_id" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.users" Member="users">
+    <Type Name="user">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="phone_number" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="cust_active" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vendor_active" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="cust_name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="cust_address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="cust_latitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="cust_longitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="vendor_address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="vendor_latitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="vendor_longitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="created_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Column Name="updated_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Association Name="user_product" Member="products" ThisKey="id" OtherKey="vendor_id" Type="product" />
+      <Association Name="user_transaction" Member="transactions" ThisKey="id" OtherKey="vendor_id" Type="transaction" />
+      <Association Name="user_transaction1" Member="transactions1" ThisKey="id" OtherKey="customer_id" Type="transaction" />
+    </Type>
+  </Table>
+  <Table Name="dbo.transactions" Member="transactions">
+    <Type Name="transaction">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="customer_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="product_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="quantity" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="total_price" Type="System.Decimal" DbType="Decimal(10,0)" CanBeNull="true" />
+      <Column Name="delivery_cost" Type="System.Decimal" DbType="Decimal(10,0)" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="created_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Column Name="updated_at" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Association Name="user_transaction" Member="user" ThisKey="vendor_id" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="product_transaction" Member="product" ThisKey="product_id" OtherKey="id" Type="product" IsForeignKey="true" />
+      <Association Name="user_transaction1" Member="user1" ThisKey="customer_id" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
