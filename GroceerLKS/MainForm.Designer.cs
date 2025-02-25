@@ -100,6 +100,7 @@
             this.buttonProduct.TabIndex = 5;
             this.buttonProduct.Text = "Product";
             this.buttonProduct.UseVisualStyleBackColor = true;
+            this.buttonProduct.Click += new System.EventHandler(this.buttonProduct_Click);
             // 
             // buttonTransaction
             // 

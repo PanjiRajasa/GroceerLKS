@@ -37,10 +37,8 @@ namespace GroceerLKS
 
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            //make all of the SessionManager data become null
-            SessionManager.PhoneNumber = null;
-            SessionManager.Password = null;
-            SessionManager.Role = null;
+            //Logout
+            SessionManager.Logout();
 
             //hide the current form first
             this.Hide();
@@ -53,7 +51,7 @@ namespace GroceerLKS
             form1.Show();
         }
 
-        //to got to the profile menu
+        //to go to the profile menu
         private void buttonProfile_Click(object sender, EventArgs e)
         {
             //make an instance of the profile form
@@ -64,7 +62,39 @@ namespace GroceerLKS
 
             //if the new form closed, current form will show again
             profile.FormClosing += (s, args) => this.Show();
+            //showing the new form
             profile.Show();
+        }
+
+        //go to the product form
+        private void buttonProduct_Click(object sender, EventArgs e)
+        {   
+            //display the product form based on the role
+            if(SessionManager.Role == "customer")
+            {
+                //make an instance of the customer product form
+                CustomerProducts customerProducts = new CustomerProducts();
+
+                //hide the current form
+                this.Hide();
+
+                //if the new form closed, current form will show again
+                customerProducts.FormClosing += (s, args) => this.Show();
+                //showing the new form
+                customerProducts.Show();
+            } else if(SessionManager.Role == "vendor")
+            {
+                //make an instance of the vendor form 
+                VendorProducts vendorProducts = new VendorProducts();
+
+                //hide the current form
+                this.Hide();
+
+                //if the new form closed, current form will show again, here I use a FormClosing method
+                vendorProducts.FormClosing += (s, args) => this.Show();
+                //showing the new form
+                vendorProducts.Show();
+            }
         }
     }
 }

@@ -31,10 +31,20 @@ namespace GroceerLKS
             //we use the Utils internal class method to perform this one, you can also use !string.IsNullOrWhiteSpace
             //inside the all function we will use the Text inside the groupBox
             return groupBoxes
-                .Where(groupBox => groupBox.Enabled)
-                .SelectMany(groupBox => groupBox.Controls.OfType<TextBox>()
-                .Concat<Control>(groupBox.Controls.OfType<RichTextBox>()))
-                .All(ctrl => !Utils.isEmptyWhiteSpaceString(ctrl.Text));
+                .Where(gb => gb.Enabled)
+                .SelectMany(gb => gb.Controls.OfType<TextBox>()
+                .Concat<Control>(gb.Controls.OfType<RichTextBox>()))
+                .All(gb => !Utils.isEmptyWhiteSpaceString(gb.Text));
+
+            //!Utils.isEmptyWhiteSpaceString(gb.Text) -> logic explaination:
+            /*
+                if !(true) -> there is an empty control, then it will reversed to false, then when we access the function, we will use negation/not operator (!) again so it will become true, and the error validation can be executed
+
+                for example: !Utils.isEmptyWhiteSpaceString(gb.Text) -> !(true) -> false -> !AreGroupBoxesValid( groupBoxes) -> !false -> true -> error validation will be executed
+
+                  !Utils.isEmptyWhiteSpaceString(gb.Text) -> !(false) -> true -> 
+                    !AreGroupBoxesValid( groupBoxes) -> !true -> false -> no error validation will be executed because no error that detected
+             */
         }
 
         //the global object that holds the user's data from this form, this method is optional, because, with all of the methods that I had created, this form should function perfectly
@@ -269,6 +279,8 @@ namespace GroceerLKS
             //customer's logic
 
             //checkboxCustomer control the customer status, if the checkBoxCustomer.Checked == false it mean, they are reactivated their role
+
+            //customer role
 
             //if reactivated the customer role, all of the pending transactions will be cancelled
             if (!checkBoxCustomer.Checked)

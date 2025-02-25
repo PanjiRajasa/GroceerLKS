@@ -92,9 +92,7 @@ namespace GroceerLKS
                 if(isValidRole)
                 {   
                     //save the login data to the session manager
-                    SessionManager.PhoneNumber = phoneNumber;
-                    SessionManager.Password = password;
-                    SessionManager.Role = selectedOption;
+                    SessionManager.Login(phoneNumber, password, selectedOption);
 
                     //hide current form first
                     this.Hide();
