@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomerProducts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomerProducts.Designer.cs">
+      <DependentUpon>CustomerProducts.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataClasses1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,6 +91,15 @@
       <DependentUpon>SignUp.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
+    <Compile Include="VendorProducts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VendorProducts.Designer.cs">
+      <DependentUpon>VendorProducts.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CustomerProducts.resx">
+      <DependentUpon>CustomerProducts.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
