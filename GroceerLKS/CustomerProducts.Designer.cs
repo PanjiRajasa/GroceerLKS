@@ -30,39 +30,45 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxList = new System.Windows.Forms.GroupBox();
+            this.dataGridViewProducts = new System.Windows.Forms.DataGridView();
             this.labelError = new System.Windows.Forms.Label();
             this.groupBoxDetails = new System.Windows.Forms.GroupBox();
-            this.comboBoxCategory = new System.Windows.Forms.ComboBox();
+            this.numericUpDownDetailsUnitStock = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownPriceUnit = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.radioButtonMeasurable = new System.Windows.Forms.RadioButton();
+            this.radioButtonCountable = new System.Windows.Forms.RadioButton();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxCategoryProducts = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxProductName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBoxTransaction = new System.Windows.Forms.GroupBox();
             this.buttonClear = new System.Windows.Forms.Button();
             this.buttonBuy = new System.Windows.Forms.Button();
             this.labelDeliveryCost = new System.Windows.Forms.Label();
             this.labelTotal = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownQuantity = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.radioButtonCountable = new System.Windows.Forms.RadioButton();
-            this.radioButtonMeasurable = new System.Windows.Forms.RadioButton();
-            this.dataGridViewProducts = new System.Windows.Forms.DataGridView();
             this.groupBoxList.SuspendLayout();
-            this.groupBoxDetails.SuspendLayout();
-            this.groupBoxTransaction.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProducts)).BeginInit();
+            this.groupBoxDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDetailsUnitStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriceUnit)).BeginInit();
+            this.groupBoxTransaction.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(331, 48);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(320, 46);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 20);
+            this.label1.Size = new System.Drawing.Size(149, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "Product Area";
             // 
@@ -76,12 +82,21 @@
             this.groupBoxList.TabStop = false;
             this.groupBoxList.Text = "List";
             // 
+            // dataGridViewProducts
+            // 
+            this.dataGridViewProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewProducts.Location = new System.Drawing.Point(6, 19);
+            this.dataGridViewProducts.Name = "dataGridViewProducts";
+            this.dataGridViewProducts.Size = new System.Drawing.Size(764, 190);
+            this.dataGridViewProducts.TabIndex = 0;
+            this.dataGridViewProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewProducts_CellClick);
+            // 
             // labelError
             // 
             this.labelError.AutoSize = true;
             this.labelError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelError.ForeColor = System.Drawing.Color.Red;
-            this.labelError.Location = new System.Drawing.Point(332, 354);
+            this.labelError.Location = new System.Drawing.Point(249, 351);
             this.labelError.Name = "labelError";
             this.labelError.Size = new System.Drawing.Size(36, 16);
             this.labelError.TabIndex = 2;
@@ -89,12 +104,16 @@
             // 
             // groupBoxDetails
             // 
+            this.groupBoxDetails.Controls.Add(this.numericUpDownDetailsUnitStock);
+            this.groupBoxDetails.Controls.Add(this.numericUpDownPriceUnit);
+            this.groupBoxDetails.Controls.Add(this.label9);
+            this.groupBoxDetails.Controls.Add(this.label8);
             this.groupBoxDetails.Controls.Add(this.radioButtonMeasurable);
             this.groupBoxDetails.Controls.Add(this.radioButtonCountable);
             this.groupBoxDetails.Controls.Add(this.label7);
-            this.groupBoxDetails.Controls.Add(this.comboBoxCategory);
+            this.groupBoxDetails.Controls.Add(this.comboBoxCategoryProducts);
             this.groupBoxDetails.Controls.Add(this.label6);
-            this.groupBoxDetails.Controls.Add(this.textBox1);
+            this.groupBoxDetails.Controls.Add(this.textBoxProductName);
             this.groupBoxDetails.Controls.Add(this.label5);
             this.groupBoxDetails.Location = new System.Drawing.Point(12, 385);
             this.groupBoxDetails.Name = "groupBoxDetails";
@@ -103,13 +122,76 @@
             this.groupBoxDetails.TabStop = false;
             this.groupBoxDetails.Text = "Details";
             // 
-            // comboBoxCategory
+            // numericUpDownDetailsUnitStock
             // 
-            this.comboBoxCategory.FormattingEnabled = true;
-            this.comboBoxCategory.Location = new System.Drawing.Point(70, 66);
-            this.comboBoxCategory.Name = "comboBoxCategory";
-            this.comboBoxCategory.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxCategory.TabIndex = 3;
+            this.numericUpDownDetailsUnitStock.Location = new System.Drawing.Point(313, 59);
+            this.numericUpDownDetailsUnitStock.Name = "numericUpDownDetailsUnitStock";
+            this.numericUpDownDetailsUnitStock.Size = new System.Drawing.Size(87, 20);
+            this.numericUpDownDetailsUnitStock.TabIndex = 10;
+            // 
+            // numericUpDownPriceUnit
+            // 
+            this.numericUpDownPriceUnit.Location = new System.Drawing.Point(313, 31);
+            this.numericUpDownPriceUnit.Name = "numericUpDownPriceUnit";
+            this.numericUpDownPriceUnit.Size = new System.Drawing.Size(87, 20);
+            this.numericUpDownPriceUnit.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(248, 64);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(57, 13);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Unit Stock";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(248, 33);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Price/Unit";
+            // 
+            // radioButtonMeasurable
+            // 
+            this.radioButtonMeasurable.AutoSize = true;
+            this.radioButtonMeasurable.Location = new System.Drawing.Point(179, 109);
+            this.radioButtonMeasurable.Name = "radioButtonMeasurable";
+            this.radioButtonMeasurable.Size = new System.Drawing.Size(114, 17);
+            this.radioButtonMeasurable.TabIndex = 6;
+            this.radioButtonMeasurable.TabStop = true;
+            this.radioButtonMeasurable.Text = "Measurable (kg/ltr)";
+            this.radioButtonMeasurable.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonCountable
+            // 
+            this.radioButtonCountable.AutoSize = true;
+            this.radioButtonCountable.Location = new System.Drawing.Point(74, 109);
+            this.radioButtonCountable.Name = "radioButtonCountable";
+            this.radioButtonCountable.Size = new System.Drawing.Size(99, 17);
+            this.radioButtonCountable.TabIndex = 5;
+            this.radioButtonCountable.TabStop = true;
+            this.radioButtonCountable.Text = "Countable (pcs)";
+            this.radioButtonCountable.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 111);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Unit Type";
+            // 
+            // comboBoxCategoryProducts
+            // 
+            this.comboBoxCategoryProducts.FormattingEnabled = true;
+            this.comboBoxCategoryProducts.Location = new System.Drawing.Point(70, 66);
+            this.comboBoxCategoryProducts.Name = "comboBoxCategoryProducts";
+            this.comboBoxCategoryProducts.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxCategoryProducts.TabIndex = 3;
             // 
             // label6
             // 
@@ -120,12 +202,12 @@
             this.label6.TabIndex = 2;
             this.label6.Text = "Category";
             // 
-            // textBox1
+            // textBoxProductName
             // 
-            this.textBox1.Location = new System.Drawing.Point(70, 30);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(95, 20);
-            this.textBox1.TabIndex = 1;
+            this.textBoxProductName.Location = new System.Drawing.Point(70, 30);
+            this.textBoxProductName.Name = "textBoxProductName";
+            this.textBoxProductName.Size = new System.Drawing.Size(121, 20);
+            this.textBoxProductName.TabIndex = 1;
             // 
             // label5
             // 
@@ -142,7 +224,7 @@
             this.groupBoxTransaction.Controls.Add(this.buttonBuy);
             this.groupBoxTransaction.Controls.Add(this.labelDeliveryCost);
             this.groupBoxTransaction.Controls.Add(this.labelTotal);
-            this.groupBoxTransaction.Controls.Add(this.numericUpDown1);
+            this.groupBoxTransaction.Controls.Add(this.numericUpDownQuantity);
             this.groupBoxTransaction.Controls.Add(this.label4);
             this.groupBoxTransaction.Controls.Add(this.label3);
             this.groupBoxTransaction.Controls.Add(this.label2);
@@ -170,6 +252,7 @@
             this.buttonBuy.TabIndex = 6;
             this.buttonBuy.Text = "Buy Item";
             this.buttonBuy.UseVisualStyleBackColor = true;
+            this.buttonBuy.Click += new System.EventHandler(this.buttonBuy_Click);
             // 
             // labelDeliveryCost
             // 
@@ -191,12 +274,12 @@
             this.labelTotal.TabIndex = 4;
             this.labelTotal.Text = "0";
             // 
-            // numericUpDown1
+            // numericUpDownQuantity
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(97, 26);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(88, 20);
-            this.numericUpDown1.TabIndex = 3;
+            this.numericUpDownQuantity.Location = new System.Drawing.Point(97, 26);
+            this.numericUpDownQuantity.Name = "numericUpDownQuantity";
+            this.numericUpDownQuantity.Size = new System.Drawing.Size(88, 20);
+            this.numericUpDownQuantity.TabIndex = 3;
             // 
             // label4
             // 
@@ -225,45 +308,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Quantity";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(15, 111);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Unit Type";
-            // 
-            // radioButtonCountable
-            // 
-            this.radioButtonCountable.AutoSize = true;
-            this.radioButtonCountable.Location = new System.Drawing.Point(74, 109);
-            this.radioButtonCountable.Name = "radioButtonCountable";
-            this.radioButtonCountable.Size = new System.Drawing.Size(99, 17);
-            this.radioButtonCountable.TabIndex = 5;
-            this.radioButtonCountable.TabStop = true;
-            this.radioButtonCountable.Text = "Countable (pcs)";
-            this.radioButtonCountable.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonMeasurable
-            // 
-            this.radioButtonMeasurable.AutoSize = true;
-            this.radioButtonMeasurable.Location = new System.Drawing.Point(179, 109);
-            this.radioButtonMeasurable.Name = "radioButtonMeasurable";
-            this.radioButtonMeasurable.Size = new System.Drawing.Size(114, 17);
-            this.radioButtonMeasurable.TabIndex = 6;
-            this.radioButtonMeasurable.TabStop = true;
-            this.radioButtonMeasurable.Text = "Measurable (kg/ltr)";
-            this.radioButtonMeasurable.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewProducts
-            // 
-            this.dataGridViewProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewProducts.Location = new System.Drawing.Point(6, 19);
-            this.dataGridViewProducts.Name = "dataGridViewProducts";
-            this.dataGridViewProducts.Size = new System.Drawing.Size(764, 190);
-            this.dataGridViewProducts.TabIndex = 0;
-            // 
             // CustomerProducts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -278,12 +322,14 @@
             this.Text = "CustomerProducts";
             this.Load += new System.EventHandler(this.CustomerProducts_Load);
             this.groupBoxList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProducts)).EndInit();
             this.groupBoxDetails.ResumeLayout(false);
             this.groupBoxDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDetailsUnitStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriceUnit)).EndInit();
             this.groupBoxTransaction.ResumeLayout(false);
             this.groupBoxTransaction.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProducts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -296,21 +342,25 @@
         private System.Windows.Forms.Label labelError;
         private System.Windows.Forms.GroupBox groupBoxDetails;
         private System.Windows.Forms.GroupBox groupBoxTransaction;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDownQuantity;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonBuy;
         private System.Windows.Forms.Label labelDeliveryCost;
         private System.Windows.Forms.Label labelTotal;
-        private System.Windows.Forms.ComboBox comboBoxCategory;
+        private System.Windows.Forms.ComboBox comboBoxCategoryProducts;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxProductName;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.RadioButton radioButtonMeasurable;
         private System.Windows.Forms.RadioButton radioButtonCountable;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridView dataGridViewProducts;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown numericUpDownDetailsUnitStock;
+        private System.Windows.Forms.NumericUpDown numericUpDownPriceUnit;
+        private System.Windows.Forms.Label label9;
     }
 }
