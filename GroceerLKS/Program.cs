@@ -16,7 +16,7 @@ namespace GroceerLKS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CustomerProducts());
+            Application.Run(new Form1());
         }
     }
 }

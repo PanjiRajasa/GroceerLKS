@@ -58,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Delivery.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -280,6 +280,7 @@
             this.numericUpDownQuantity.Name = "numericUpDownQuantity";
             this.numericUpDownQuantity.Size = new System.Drawing.Size(88, 20);
             this.numericUpDownQuantity.TabIndex = 3;
+            this.numericUpDownQuantity.ValueChanged += new System.EventHandler(this.numericUpDownQuantity_ValueChanged);
             // 
             // label4
             // 
