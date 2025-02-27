@@ -89,10 +89,12 @@ namespace GroceerLKS
                 bool isValidRole = (selectedOption == "customer" && User.cust_active == 1) ||
                                    (selectedOption == "vendor" && User.vendor_active == 1);
 
+                var loggedId = (from s in db.users where s.id == User.id select s.id).FirstOrDefault();
+
                 if(isValidRole)
                 {   
                     //save the login data to the session manager
-                    SessionManager.Login(phoneNumber, password, selectedOption);
+                    SessionManager.Login(phoneNumber, password, selectedOption, loggedId);
 
                     //hide current form first
                     this.Hide();
