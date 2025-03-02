@@ -1,0 +1,30 @@
+user placeholder
+
+vendor & customer
+phone
+0873956046825
+pw
+Rimari46825
+
+vendor
+phone
+088625040024
+pw
+Wijaya40024
+
+customer
+phone
+08861554350
+pw
+Prggro1234
+
+another one
+phone
+08825457768
+pw
+Sangka12345
+
+TODO
+complete delete product logic in the vendor form
+
+

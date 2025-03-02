@@ -41,31 +41,11 @@ namespace GroceerLKS
 
             //load the data
 
-            //dataGridView data
-            //Here I use the join query to combine product + user + categories with some selections
+            //make the object instance
+            ActiveProduct activeProd = new ActiveProduct();
 
-            //from the products table, join it with the users table on vendor id from the products table equal to the id from the user, then join it with the categories table on category id from the products table equal to the user id from the users table
-            //where (criteria that indicate whether the products is active or not, is_active from the products table == 1, unit_stock from the products table more than 0 -> unit_stock > 0, and the last, vendor_active status is == 1 from the users table
-            //then we will display a new object which contains vendor_name,product_name,name (category), unit_type, price_per_unit, unit_stock
-            var activeProduct = from p in db.products
-                                join v in db.users on p.vendor_id equals v.id
-                                join c in db.categories on p.category_id equals c.id
-                                where p.is_active == 1
-                                && p.unit_stock > 0
-                                && v.vendor_active == 1
-                                select new
-                                {   
-                                    productID = p.id,
-                                    vendorID = v.id,
-                                    v.vendor_name,
-                                    p.product_name,
-                                    c.name,
-                                    p.unit_type,
-                                    p.price_per_unit,
-                                    p.unit_stock,
-                                    v.vendor_latitude, //this column will be hidden, because we don not need it to be displayed, but we neeed it for the delivery total logic
-                                    v.vendor_longitude //this column will be hidden too
-                                };
+            var activeProduct = activeProd.GetActiveProducts();
+
             //bind the data to the DataGridView
             dataGridViewProducts.DataSource = activeProduct.ToList();
 
@@ -116,7 +96,7 @@ namespace GroceerLKS
                 //product name TextBox
                 textBoxProductName.Text = row.Cells["product_name"].Value.ToString();
                 //products category comboBox
-                comboBoxCategoryProducts.Text = row.Cells["name"].Value.ToString();
+                comboBoxCategoryProducts.Text = row.Cells["category_name"].Value.ToString();
                 //radio button result
                 string unit_type = row.Cells["unit_type"].Value.ToString().ToLower();
                 //use condition to determine which unitType that we will choose
@@ -130,11 +110,9 @@ namespace GroceerLKS
 
                 //price per unit numericUpDown
 
-                //in order to avoid exception range bugs, here we will set the minimum and maximum value of the numericUpDown value based on the minimum and maximum value of the price value in database
-
-                //here we are using Max and Min function
-                decimal minimalValue = db.products.Min(p => Convert.ToDecimal(p.price_per_unit));
-                decimal maxValue = db.products.Max(p => Convert.ToDecimal(p.price_per_unit));
+                //in order to avoid exception range bugs, here we will set the minimum and maximum value of the numericUpDown value based on the minimum and maximum value, here I'll use 1 ad the minimal value and then infinity value as the maximum value
+                decimal minimalValue = 1;
+                decimal maxValue = decimal.MaxValue; //decimal.MaxValue -> infinity
 
                 //assign the minimalValue and the maximumValue to the Minimum and Maximum properties
                 numericUpDownPriceUnit.Minimum = minimalValue;
@@ -202,10 +180,31 @@ namespace GroceerLKS
         {
             //numericUpDownQuantity logic
             //if the numeric up down value is higher than the unit stock numeric up down value
+            //if user try to buy a product but with quantity that higher than the product stock
             if (numericUpDownQuantity.Value > numericUpDownDetailsUnitStock.Value)
             {
                 labelError.Visible = true;
-                labelError.Text = "Cannot calculate total when quantity higher than stock";
+                labelError.Text = "Quantity cannot exceed available stock!";
+                return;
+            }
+
+            //if quantity is 0 or empty
+            if(numericUpDownQuantity.Value <= 0)
+            {
+                labelError.Visible = true;
+                labelError.Text = "Insufficient stock!";
+                return;
+            }
+
+            //make sure that the user's transaction amount isn't more than 10 transaction
+            PendingTransaction pendingTransaction = new PendingTransaction();
+            var pendingTran = pendingTransaction.GetPendingTransaction();
+
+            //if the user's transaction > 10, the user can't make a transaction until the vendor approve it or the user cancel it
+            if(pendingTran > 10)
+            {
+                labelError.Visible = true;
+                labelError.Text = "You cannot have more than 10 pending transactions.";
                 return;
             }
 
@@ -230,8 +229,33 @@ namespace GroceerLKS
                 transaction.created_at = DateTime.Now;
                 transaction.updated_at = DateTime.Now;
 
+                //deduct the product quantity/stock
+                //search product where its ID == selected product ID
+                var selectedProduct = db.products.FirstOrDefault(s => s.id == transaction.product_id);
+
+                //if the selectedProduct is not null and the unit stock is higher than 0
+                if(selectedProduct != null && selectedProduct.unit_stock > 0)
+                {
+                    selectedProduct.unit_stock -= transaction.quantity;
+                }
+
+                //insert the new data to the database
                 db.transactions.InsertOnSubmit(transaction);
+
+                //submit to the database
                 db.SubmitChanges();
+
+                //refresh the dataGrid view
+
+                //load the data again
+
+                //make the object instance
+                ActiveProduct activeProd = new ActiveProduct();
+
+                var activeProduct = activeProd.GetActiveProducts();
+
+                //set the dataGridView data
+                dataGridViewProducts.DataSource = activeProduct.ToList();
             }
         }
 
@@ -256,5 +280,26 @@ namespace GroceerLKS
             labelTotal.Text = total.ToString();
         }
 
+        //clear logic
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            //disabled the buy button
+            buttonBuy.Enabled = false;
+
+            //clear all the components, make every text empty and every number reset to 0
+            textBoxProductName.Text = ""; //name
+
+            comboBoxCategoryProducts.Text = ""; //category 
+
+            radioButtonCountable.Checked = false; //countable radio
+
+            radioButtonMeasurable.Checked = false; //measurable radio
+
+            numericUpDownPriceUnit.Value = 0; //price per unit
+
+            numericUpDownDetailsUnitStock.Value = 0; //unit stock
+
+            labelDeliveryCost.Text = ""; //delivery cost
+        }
     }
 }

@@ -69,6 +69,7 @@ namespace GroceerLKS
             textBoxPhoneProfile.Enabled = false;
             groupBoxCustomer.Enabled = false;
             groupBoxVendor.Enabled = false;
+            buttonEditProfile.Enabled = false;
 
             //select the user data where his phone number == phone number from the login
             var user = (from s in db.users where s.phone_number == SessionManager.PhoneNumber select s).FirstOrDefault();
