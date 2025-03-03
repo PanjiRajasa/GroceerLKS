@@ -35,9 +35,25 @@ namespace GroceerLKS
             //load the dataGridView data
 
             //make an instance
-            VendorProdList vendorProdList = new VendorProdList();
+            //VendorProdList vendorProdList = new VendorProdList();
             //call the method and then save it inside a variable
-            var vendorProduct = vendorProdList.GetProdList();
+            //var vendorProduct = vendorProdList.GetProdList();
+            var vendorProduct = from p in db.products
+                                join u in db.users on p.vendor_id equals u.id
+                                join c in db.categories on p.category_id equals c.id
+                                where p.deleted_at == null
+                                && u.id == SessionManager.ID
+                                select new
+                                {
+                                    p.category_id,
+                                    productID = p.id,
+                                    p.product_name,
+                                    category_name = c.name,
+                                    p.unit_type,
+                                    p.price_per_unit,
+                                    p.unit_stock,
+                                    status = p.is_active == 1 //short to boolean, so we can use checkbox inside the dataGridView to represent this column, this way is enough, because if there's a boolean data, the items will be automatically become a checkBox
+                                };
 
             //then display the data
             dataGridViewVendor.DataSource = vendorProduct.ToList();
@@ -96,11 +112,8 @@ namespace GroceerLKS
                 else radioButtonCountable.Checked = true;
 
                 //category comboBox
-
-                //we will display all of the category options as the option
-                var category = db.categories.Where(c => c.is_active == 1).Select(c => c.name).ToList();
                 //assign to the comboBox
-                comboBoxCategory.DataSource = category;
+                comboBoxCategory.DataSource = db.categories.Where(c => c.is_active == 1).Select(c => c.name).ToList();
                 //item that currently displayed, we will use from the DB
                 comboBoxCategory.SelectedItem = dataGridViewRow.Cells["category_name"].Value;
 
@@ -121,20 +134,20 @@ namespace GroceerLKS
                 //numericUpDownPrice
 
                 //set the maximum and the minimum value 
-                numericUpDownPrice.Minimum = 1;
+                numericUpDownPrice.Minimum = 0;
                 numericUpDownPrice.Maximum = decimal.MaxValue;
 
                 numericUpDownPrice.Value = Convert.ToDecimal(dataGridViewRow.Cells["price_per_unit"].Value);
 
-                //numericUpDownStock
-                numericUpDownStock.Value = Convert.ToDecimal(dataGridViewRow.Cells["unit_stock"].Value);
-
                 //set the maximum and the minimum value 
-                numericUpDownStock.Minimum = 1;
+                numericUpDownStock.Minimum = 0;
                 //so the value will be infinity
                 numericUpDownStock.Maximum = decimal.MaxValue;
                 //to allow decimal value
                 numericUpDownStock.DecimalPlaces = 2;
+
+                //numericUpDownStock
+                numericUpDownStock.Value = Convert.ToDecimal(dataGridViewRow.Cells["unit_stock"].Value);
 
                 //set the public category id value
                 CategoryID = int.Parse(dataGridViewRow.Cells["category_id"].Value.ToString());
@@ -152,17 +165,23 @@ namespace GroceerLKS
         //when the user press the cancel button, they will back to main form
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            //instance
-            MainForm mainForm = new MainForm();
+            //cancel logic
+            try
+            {
+                db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.products); //refresh DB
+                RefreshUI(); //refresh UI
 
-            //hide the current form first
-            this.Hide();
+                //debug
+                MessageBox.Show("success cancel");
+                Console.WriteLine("Success cancel");
+            } catch (Exception ex)
+            {   
+                //debug
+                MessageBox.Show("" + ex);
+                Console.WriteLine(ex);
+            }
+            
 
-            //go to the next, form and logic if we close the new form, the current form will be closed too
-            mainForm.FormClosing += (s, args) => this.Close();
-
-            //show the mainForm
-            mainForm.Show();
         }
 
         //save to the database if we clicked this button
@@ -171,13 +190,26 @@ namespace GroceerLKS
             //to avoid System.Data.Linq.ChangeConflictException bugs
             try
             {
+                
                 db.SubmitChanges(); // we try to save the data
-            } 
-            catch
+                db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.products); //refresh 
+                //make everything empty
+                ClearFormInputs();
+
+                //succesfully message for debug
+                MessageBox.Show("Semua perubahan berhasil disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
             {
+                //messagebox for debug
+                MessageBox.Show("Terjadi kesalahan saat menyimpan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine(ex);
                 //if error occurs, then we will refresh the data
                 db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.products);
                 db.SubmitChanges();
+                //make everything empty
+                ClearFormInputs();
             }
 
             //refresh the UI
@@ -187,9 +219,39 @@ namespace GroceerLKS
         //refresh UI method
         private void RefreshUI()
         {
-            VendorProdList vendorProd = new VendorProdList();
-            var vendorProducts = vendorProd.GetProdList();
+            var vendorProducts = from p in db.products
+                                 join u in db.users on p.vendor_id equals u.id
+                                 join c in db.categories on p.category_id equals c.id
+                                 where p.deleted_at == null
+                                 && u.id == SessionManager.ID
+                                 select new
+                                 {
+                                     p.category_id,
+                                     productID = p.id,
+                                     p.product_name,
+                                     category_name = c.name,
+                                     p.unit_type,
+                                     p.price_per_unit,
+                                     p.unit_stock,
+                                     status = p.is_active == 1 //short to boolean, so we can use checkbox inside the dataGridView to represent this column, this way is enough, because if there's a boolean data, the items will be automatically become a checkBox
+                                 };
+
+            comboBoxCategory.DataSource = db.categories.Where(c => c.is_active == 1).Select(c => c.name).ToList(); //update comboBox
+            comboBoxCategory.SelectedIndex = -1; // Reset category
             dataGridViewVendor.DataSource = vendorProducts.ToList();
+        }
+
+        //clear form input
+        private void ClearFormInputs()
+        {
+            //make everything empty
+            textBoxName.Text = null;
+            comboBoxCategory.SelectedItem = null;
+            radioButtonCountable.Checked = false;
+            radioButtonMeasurable.Checked = false;
+            comboBoxStatus.SelectedItem = null;
+            numericUpDownPrice.Value = numericUpDownPrice.Minimum;
+            numericUpDownStock.Value = numericUpDownStock.Minimum;
         }
 
         //to add the new item to the db
@@ -264,7 +326,12 @@ namespace GroceerLKS
                 product.product_name = textBoxName.Text;
 
                 //category id
-                product.category_id = CategoryID;
+                product.category_id = (from p in db.products
+                                      join c in db.categories on p.category_id equals c.id
+                                      where comboBoxCategory.SelectedItem.ToString() == c.name
+                                      select c.id).FirstOrDefault();
+                //for debug
+                //MessageBox.Show("Perubahan pada " + product.category_id); 
 
                 //unit type
                 product.unit_type = UnitType;
@@ -345,7 +412,7 @@ namespace GroceerLKS
             //add to the DB
 
             //new product data
-            var product = db.products.FirstOrDefault(s => s.id == productID);
+            var product = db.products.Where(s => s.id == productID).Select(s => s).FirstOrDefault();
 
             //if the product isn't null
             if (product != null)
@@ -357,7 +424,12 @@ namespace GroceerLKS
                 product.product_name = textBoxName.Text;
 
                 //category id
-                product.category_id = CategoryID;
+                product.category_id = (from p in db.products
+                                       join c in db.categories on p.category_id equals c.id
+                                       where comboBoxCategory.SelectedItem.ToString() == c.name
+                                       select c.id).FirstOrDefault();
+                //for debug
+                //MessageBox.Show("Perubahan pada " + product.category_id);
 
                 //unit type
                 product.unit_type = UnitType;
@@ -375,24 +447,43 @@ namespace GroceerLKS
                 //TimeStamps
                 product.created_at = DateTime.Now;
                 product.updated_at = DateTime.Now;
+
+                //Reset productID
+                productID = -1; //-1 == empty
             }
         }
 
         //logic to delete the item
         private void buttonDelete_Click(object sender, EventArgs e)
-        {
-            //all column must be filled, validation
-            if (Utils.isEmptyWhiteSpaceString(textBoxName.Text) || Utils.isEmptyWhiteSpaceString(comboBoxCategory.Text) || (!radioButtonCountable.Checked && !radioButtonMeasurable.Checked) || Utils.isEmptyWhiteSpaceString(comboBoxStatus.Text))
+        {   
+            //for debugging
+            if(productID == -1)
             {
-                labelError.Visible = true;
-                labelError.Text = "All columns must be filled!";
+                MessageBox.Show("select product first!");
                 return;
             }
 
+            //use try catch to avoid error
+            try
+            {
+                var selectedProduct = (from p in db.products where p.id == productID select p).FirstOrDefault();
 
+                if(selectedProduct != null)
+                {
+                    selectedProduct.deleted_at = DateTime.Now;
+                    //debug
+                    MessageBox.Show("Success Delete");
+                }
+
+            } catch (Exception ex)
+            {
+                //for debug
+                MessageBox.Show("Error occurs: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             //if there's no error
             labelError.Visible = false;
+
         }
     }
 }

@@ -96,5 +96,30 @@ namespace GroceerLKS
                 vendorProducts.Show();
             }
         }
+
+        //to go the transaction form
+        private void buttonTransaction_Click(object sender, EventArgs e)
+        {
+            //display the transaction form based on the role
+            if(SessionManager.Role == "customer")
+            {
+                TransactionCustomer transactionCustomer = new TransactionCustomer(); //new form instance
+
+                this.Hide(); //hide the current form
+
+                transactionCustomer.FormClosing += (s, args) => this.Show(); //new form closed = current form will showing again
+
+                transactionCustomer.Show(); //show the current form
+            } else if(SessionManager.Role == "vendor")
+            {
+                TransactionVendor transactionVendor = new TransactionVendor(); //new form instance
+
+                this.Hide(); //hide the current form
+
+                transactionVendor.FormClosing += (s, args) => this.Show(); //new form closed = current form will showing again
+
+                transactionVendor.Show(); //show the current form
+            }
+        }
     }
 }

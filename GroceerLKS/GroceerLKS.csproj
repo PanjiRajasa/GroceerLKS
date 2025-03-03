@@ -93,6 +93,18 @@
     <Compile Include="SignUp.Designer.cs">
       <DependentUpon>SignUp.cs</DependentUpon>
     </Compile>
+    <Compile Include="TransactionCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransactionCustomer.Designer.cs">
+      <DependentUpon>TransactionCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionVendor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransactionVendor.Designer.cs">
+      <DependentUpon>TransactionVendor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="VendorProdList.cs" />
     <Compile Include="VendorProducts.cs">
@@ -124,6 +136,9 @@
     </Compile>
     <EmbeddedResource Include="SignUp.resx">
       <DependentUpon>SignUp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransactionCustomer.resx">
+      <DependentUpon>TransactionCustomer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VendorProducts.resx">
       <DependentUpon>VendorProducts.cs</DependentUpon>
