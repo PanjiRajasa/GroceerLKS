@@ -175,11 +175,11 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(140, 171);
+            this.label9.Location = new System.Drawing.Point(146, 171);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(60, 13);
+            this.label9.Size = new System.Drawing.Size(54, 13);
             this.label9.TabIndex = 14;
-            this.label9.Text = "Loongitude";
+            this.label9.Text = "Longitude";
             // 
             // textBoxLatitudeCustomer
             // 
@@ -267,11 +267,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(140, 171);
+            this.label10.Location = new System.Drawing.Point(146, 171);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(60, 13);
+            this.label10.Size = new System.Drawing.Size(54, 13);
             this.label10.TabIndex = 14;
-            this.label10.Text = "Loongitude";
+            this.label10.Text = "Longitude";
             // 
             // textBoxLatitudeVendor
             // 

@@ -100,6 +100,7 @@
             this.buttonProduct.TabIndex = 5;
             this.buttonProduct.Text = "Product";
             this.buttonProduct.UseVisualStyleBackColor = true;
+            this.buttonProduct.Click += new System.EventHandler(this.buttonProduct_Click);
             // 
             // buttonTransaction
             // 
@@ -110,6 +111,7 @@
             this.buttonTransaction.TabIndex = 6;
             this.buttonTransaction.Text = "Transaction";
             this.buttonTransaction.UseVisualStyleBackColor = true;
+            this.buttonTransaction.Click += new System.EventHandler(this.buttonTransaction_Click);
             // 
             // buttonLogout
             // 

@@ -52,6 +52,12 @@ namespace GroceerLKS
             return true;
         }
 
+        //to check something is digit
+        public static bool isDigit(string text)
+        {
+            return text.All(char.IsDigit);
+        }
+
         public static bool isValidPhoneNumber(string phoneNumber)
         {
             return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 10 && phoneNumber.Length <= 15;

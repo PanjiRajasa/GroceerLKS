@@ -1,0 +1,52 @@
+user placeholder
+
+vendor & customer
+phone
+0873956046825
+pw
+Rimari46825
+
+vendor
+phone
+088625040024
+pw
+Wijaya40024
+
+customer
+phone
+08861554350
+pw
+Prggro1234
+
+another one
+phone
+08825457768
+pw
+Sangka12345
+
+shinta user
+phone
+088298769349
+pw
+Shint123
+
+Sketch
+
+user
+id
+cust_active
+vendor_active
+
+transaction
+id
+vendor_id
+customer_id
+status
+product_id
+
+products
+id
+vendor_id
+is_active
+
+
