@@ -30,8 +30,15 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewHistory = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewPending = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.labelDeliveryCost = new System.Windows.Forms.Label();
+            this.labelTotalTransaction = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.labelPriceperUnit = new System.Windows.Forms.Label();
             this.labelQuantity = new System.Windows.Forms.Label();
             this.labelVendorName = new System.Windows.Forms.Label();
@@ -40,18 +47,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.labelTotalTransaction = new System.Windows.Forms.Label();
-            this.labelDeliveryCost = new System.Windows.Forms.Label();
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.dataGridViewHistory = new System.Windows.Forms.DataGridView();
-            this.dataGridViewPending = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHistory)).BeginInit();
+            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPending)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -74,6 +74,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "History";
             // 
+            // dataGridViewHistory
+            // 
+            this.dataGridViewHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewHistory.Location = new System.Drawing.Point(6, 19);
+            this.dataGridViewHistory.Name = "dataGridViewHistory";
+            this.dataGridViewHistory.Size = new System.Drawing.Size(738, 110);
+            this.dataGridViewHistory.TabIndex = 0;
+            this.dataGridViewHistory.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHistory_CellClick);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dataGridViewPending);
@@ -83,6 +92,15 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Pending";
+            // 
+            // dataGridViewPending
+            // 
+            this.dataGridViewPending.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPending.Location = new System.Drawing.Point(6, 19);
+            this.dataGridViewPending.Name = "dataGridViewPending";
+            this.dataGridViewPending.Size = new System.Drawing.Size(738, 116);
+            this.dataGridViewPending.TabIndex = 0;
+            this.dataGridViewPending.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPending_CellClick);
             // 
             // groupBox3
             // 
@@ -105,6 +123,54 @@
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Details";
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Location = new System.Drawing.Point(397, 28);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(97, 52);
+            this.buttonCancel.TabIndex = 12;
+            this.buttonCancel.Text = "Cancel Transaction";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // labelDeliveryCost
+            // 
+            this.labelDeliveryCost.AutoSize = true;
+            this.labelDeliveryCost.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDeliveryCost.Location = new System.Drawing.Point(309, 107);
+            this.labelDeliveryCost.Name = "labelDeliveryCost";
+            this.labelDeliveryCost.Size = new System.Drawing.Size(32, 13);
+            this.labelDeliveryCost.TabIndex = 11;
+            this.labelDeliveryCost.Text = "0.00";
+            // 
+            // labelTotalTransaction
+            // 
+            this.labelTotalTransaction.AutoSize = true;
+            this.labelTotalTransaction.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTotalTransaction.Location = new System.Drawing.Point(309, 80);
+            this.labelTotalTransaction.Name = "labelTotalTransaction";
+            this.labelTotalTransaction.Size = new System.Drawing.Size(32, 13);
+            this.labelTotalTransaction.TabIndex = 10;
+            this.labelTotalTransaction.Text = "0.00";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(213, 107);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "Delivery Cost";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(213, 80);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(90, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Total Transaction";
             // 
             // labelPriceperUnit
             // 
@@ -182,69 +248,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Product Name";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(213, 80);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(90, 13);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Total Transaction";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(213, 107);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(69, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Delivery Cost";
-            // 
-            // labelTotalTransaction
-            // 
-            this.labelTotalTransaction.AutoSize = true;
-            this.labelTotalTransaction.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTotalTransaction.Location = new System.Drawing.Point(309, 80);
-            this.labelTotalTransaction.Name = "labelTotalTransaction";
-            this.labelTotalTransaction.Size = new System.Drawing.Size(32, 13);
-            this.labelTotalTransaction.TabIndex = 10;
-            this.labelTotalTransaction.Text = "0.00";
-            // 
-            // labelDeliveryCost
-            // 
-            this.labelDeliveryCost.AutoSize = true;
-            this.labelDeliveryCost.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDeliveryCost.Location = new System.Drawing.Point(309, 107);
-            this.labelDeliveryCost.Name = "labelDeliveryCost";
-            this.labelDeliveryCost.Size = new System.Drawing.Size(32, 13);
-            this.labelDeliveryCost.TabIndex = 11;
-            this.labelDeliveryCost.Text = "0.00";
-            // 
-            // buttonCancel
-            // 
-            this.buttonCancel.Location = new System.Drawing.Point(397, 28);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(97, 52);
-            this.buttonCancel.TabIndex = 12;
-            this.buttonCancel.Text = "Cancel Transaction";
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewHistory
-            // 
-            this.dataGridViewHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHistory.Location = new System.Drawing.Point(6, 19);
-            this.dataGridViewHistory.Name = "dataGridViewHistory";
-            this.dataGridViewHistory.Size = new System.Drawing.Size(738, 110);
-            this.dataGridViewHistory.TabIndex = 0;
-            // 
-            // dataGridViewPending
-            // 
-            this.dataGridViewPending.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewPending.Location = new System.Drawing.Point(6, 19);
-            this.dataGridViewPending.Name = "dataGridViewPending";
-            this.dataGridViewPending.Size = new System.Drawing.Size(738, 116);
-            this.dataGridViewPending.TabIndex = 0;
-            // 
             // TransactionCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -258,11 +261,11 @@
             this.Text = "TransactionCustomer";
             this.Load += new System.EventHandler(this.TransactionCustomer_Load);
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHistory)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPending)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHistory)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPending)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

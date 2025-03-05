@@ -140,6 +140,9 @@
     <EmbeddedResource Include="TransactionCustomer.resx">
       <DependentUpon>TransactionCustomer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TransactionVendor.resx">
+      <DependentUpon>TransactionVendor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VendorProducts.resx">
       <DependentUpon>VendorProducts.cs</DependentUpon>
     </EmbeddedResource>
