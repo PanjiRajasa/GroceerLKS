@@ -20,7 +20,7 @@ namespace GroceerLKS
             InitializeComponent();
         }
 
-        //public status
+        //public selectedTansaction
         public string statusTransaction { get; private set; }
         //public transaction id
         private int transactionID = -1;
@@ -200,17 +200,28 @@ namespace GroceerLKS
         //when the user cancel the transaction
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            //status variable
-            var status = (from transaction in db.transactions
-                          where transaction.status == "pending"
-                          && transaction.id == transactionID
+            //selectedTansaction variable
+            var selectedTansaction = (from transaction in db.transactions
+                          where transaction.id == transactionID
                           select transaction).FirstOrDefault();
 
-            //if the status var is not null
-            if (status != null)
+            //if the selectedTansaction var is not null
+            if (selectedTansaction != null)
             {
                 //cancel the transaction
-                status.status = "abort";
+                selectedTansaction.status = "abort"; //change the status to abort
+
+                //product that related to the transaction, here we will select the quantity then we will use it for the restock logic
+                var relatedProduct = (from product in db.products
+                                      where product.id == selectedTansaction.product_id
+                                      select product).FirstOrDefault();
+
+                //if the related product is not null
+                if(relatedProduct != null)
+                {
+                    //add the cancelled related product's quantity back to the product 
+                    relatedProduct.unit_stock += selectedTansaction.quantity;
+                }
             }
 
             //submit the changes and avoid the error

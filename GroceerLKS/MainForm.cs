@@ -20,11 +20,13 @@ namespace GroceerLKS
             InitializeComponent();
         }
 
+        //when the form loaded
         private void MainForm_Load(object sender, EventArgs e)
         {
             //select the user data where his phone number == phone number from the login form result
             var user = (from s in db.users where s.phone_number == SessionManager.PhoneNumber select s).FirstOrDefault();
 
+            //if the user exist
             if(user != null)
             {
                 //if the role is customer, we will use the customer's data, if not we will use the vendor's data
@@ -35,6 +37,7 @@ namespace GroceerLKS
             }
         }
 
+        //if user logout
         private void buttonLogout_Click(object sender, EventArgs e)
         {
             //Logout
@@ -48,6 +51,7 @@ namespace GroceerLKS
 
             //close the program if we close the new form
             form1.FormClosing += (s, args) => this.Close();
+            //show the login form
             form1.Show();
         }
 
@@ -82,6 +86,7 @@ namespace GroceerLKS
                 customerProducts.FormClosing += (s, args) => this.Show();
                 //showing the new form
                 customerProducts.Show();
+
             } else if(SessionManager.Role == "vendor")
             {
                 //make an instance of the vendor form 
@@ -100,8 +105,8 @@ namespace GroceerLKS
         //to go the transaction form
         private void buttonTransaction_Click(object sender, EventArgs e)
         {
-            //display the transaction form based on the role
-            if(SessionManager.Role == "customer")
+            //display the transaction form based on the role, similar logic as the buttonProduct_Click, deciding which form to be displayed based on the role that choosed
+            if (SessionManager.Role == "customer")
             {
                 TransactionCustomer transactionCustomer = new TransactionCustomer(); //new form instance
 
@@ -110,7 +115,9 @@ namespace GroceerLKS
                 transactionCustomer.FormClosing += (s, args) => this.Show(); //new form closed = current form will showing again
 
                 transactionCustomer.Show(); //show the current form
-            } else if(SessionManager.Role == "vendor")
+            } 
+            
+            else if(SessionManager.Role == "vendor")
             {
                 TransactionVendor transactionVendor = new TransactionVendor(); //new form instance
 

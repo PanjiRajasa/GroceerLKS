@@ -15,7 +15,8 @@ namespace GroceerLKS
         //make a database connection
         DataClasses1DataContext db = new DataClasses1DataContext();
 
-        //to check all of the groupBoxes members
+        //to check all of the groupBoxes members wheter it's empty or not
+        //IEnumerable<dataType> is used for an iteration of the specific dataType
         private bool AreGroupBoxesValid(IEnumerable<GroupBox> groupBoxes)
         {
             //how these codes work, first we use Where() function to filter, only enabled gropboxes that we count
@@ -112,9 +113,12 @@ namespace GroceerLKS
             }
         }
 
-        //back to the main form
+        //back to the main form and discard all of the new changes
         private void buttonDiscard_Click(object sender, EventArgs e)
         {
+            //cancel every progress
+            db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.users);
+
             //make an instance of the main form
             MainForm mainForm = new MainForm();
 
@@ -143,6 +147,7 @@ namespace GroceerLKS
             groupBoxVendor.Enabled = checkBoxVendor.Checked;
         }
 
+        //if the user press the save button
         private void buttonSave_Click(object sender, EventArgs e)
         {
 
@@ -161,12 +166,16 @@ namespace GroceerLKS
                 labelErrorProfile.Visible = true;
                 labelErrorProfile.Text = "Email must be filled!";
                 return;
-            } else if(!Utils.isValidEmail(textBoxEmailProfile.Text))
+            } 
+            //if the email format does not valid
+            else if(!Utils.isValidEmail(textBoxEmailProfile.Text))
             {
                 labelErrorProfile.Visible = true;
                 labelErrorProfile.Text = "Email does not have proper format!";
                 return;
-            } else if(!checkBoxCustomerStatus && !checkBoxVendorStatus)
+            } 
+            //if use does not choose any role
+            else if(!checkBoxCustomerStatus && !checkBoxVendorStatus)
             {
                 labelErrorProfile.Visible = true;
                 labelErrorProfile.Text = "Select at least one role!";
@@ -187,8 +196,8 @@ namespace GroceerLKS
                 return;
             }
 
-                //if everything is OK, keep the labelError invisible
-                labelErrorProfile.Visible = false;
+            //if everything is OK, keep the labelError invisible
+            labelErrorProfile.Visible = false;
 
             //make a variable that holds the user data
             //select the user data where his phone number == phone number from the login
@@ -220,13 +229,14 @@ namespace GroceerLKS
             //set the email
             newEmail = textBoxEmailProfile.Text;
 
-            //if the groupBox customer enabled
+            //if the groupBox customer enabled, we will set the role to be customer
             if(groupBoxCustomer.Enabled)
             {   
                 //activate the customer role
                 cust_active = 1;
                 
             }
+
             //wheter the groupBox enabled or not, the data will still remains even if we disable the role
             cust_name = textBoxCustomerName.Text;
             cust_address = richTextBoxCustomerAddress.Text;
@@ -271,15 +281,17 @@ namespace GroceerLKS
                 //timeStamps, only use the updated_at because we only update the existing user, not insert a new user data
                 user.updated_at = DateTime.Now;
 
-                //submit the data
-                db.SubmitChanges();
+                //submit the data, use try cacth to perevent error
+                try {db.SubmitChanges(); }
+                catch (Exception ex) { Console.WriteLine($"{ex.Message}"); }
+                
              }
 
             //control the transaction status and product status, based on the role status (0 inactive / 1 active)
 
             //customer's logic
 
-            //checkboxCustomer control the customer status, if the checkBoxCustomer.Checked == false it mean, they are reactivated their role
+            //checkboxCustomer control the customer status, if the checkBoxCustomer.Checked == false it means, they have reactivated their role
 
             //customer role
 
@@ -295,12 +307,14 @@ namespace GroceerLKS
                 }
 
 
-                db.SubmitChanges();
+                //submit the data, use try cacth to perevent error
+                try { db.SubmitChanges(); }
+                catch (Exception ex) { Console.WriteLine($"{ex.Message}"); }
             }
 
             //vendor role
 
-            //if reactivated vendor role, all of the pending transactions will be cancelled and all of their product listing will be inactive
+            //if reactivated vendor role, all of the pending transactions will be cancelled/abort and all of their product listing will be inactive
             if (!checkBoxVendor.Checked)
             {
                 //pending transaction customer
@@ -318,8 +332,10 @@ namespace GroceerLKS
                     product.is_active = 0;
                 }
 
-                
-                db.SubmitChanges();
+
+                //submit the data, use try cacth to perevent error
+                try { db.SubmitChanges(); }
+                catch (Exception ex) { Console.WriteLine($"{ex.Message}"); }
             }
 
 

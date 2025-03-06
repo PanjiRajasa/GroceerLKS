@@ -39,15 +39,16 @@ namespace GroceerLKS
         //control the groupbox behavior based on the CheckedChanged event
         private void checkBoxCustomerSP_CheckedChanged(object sender, EventArgs e)
         {
-            //control which group box that need to be displayed based on the checkbox
+            //Control which group box needs to be displayed based on the checkbox. If the checkbox is true (checked), then the corresponding group box will be enabled.
             groupBoxCustomerDetails.Enabled = checkBoxCustomerSP.Checked;
         }
 
         private void checkBoxVendorSP_CheckedChanged(object sender, EventArgs e)
         {
-            //control which group box that need to be displayed based on the checkbox
+            //control which group box that need to be displayed based on the checkbox, the logic is same as the previous logic
             groupBoxVendorDetails.Enabled = checkBoxVendorSP.Checked;
         }
+
 
         //all of the groupbox's members will be required if it's enabled
         private bool AreGroupBoxesValid(params GroupBox[] groupBoxes)
@@ -62,7 +63,7 @@ namespace GroceerLKS
                     continue; //If there's an inactive groupBox, skip
                 }
 
-                //loop all of the controls inside the groupBoxes -> using the local groupBox variable
+                //loop all of the controls inside the groupBoxes -> using the groupBox parameter variable
                 foreach(Control ctrl in groupBox.Controls)
                 {   
                     //if the control is a TextBox
@@ -83,6 +84,7 @@ namespace GroceerLKS
             return true; //it means, everything inside the groupBoxes is valid and we can move to the next checking
         }
 
+        //when the register button is clicked
         private void buttonRegister_Click(object sender, EventArgs e)
         {
             //reformat the user's input 
@@ -104,36 +106,51 @@ namespace GroceerLKS
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "All column must be filled!";
                 return;
-            }else if (!(Utils.isValidPhoneNumber(phoneNumber)))
+            }
+            //if the phone number format is not valid
+            else if (!(Utils.isValidPhoneNumber(phoneNumber)))
             {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "Phone number must be digits\r\nand 10 - 15 characters long!";
                 return;
-            } else if(!(Utils.isValidPasswordPattern(password))) {
+            } 
+            //if the password pattern is not valid (password must contains a combination of uppercase, lowercase, and numbers with the length minimum 8 characters) 
+            else if(!(Utils.isValidPasswordPattern(password))) {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "Password must be a combination of uppercase, lowercase characters,\r\nand numbers with length minimum 8 characters!";
                 return;
-            } else if(!(Utils.isPasswordMatch(password, confirmPassword)))
+            } 
+            //if both password testBoxes are matching
+            else if(!(Utils.isPasswordMatch(password, confirmPassword)))
             {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "Passwords confirmation doesn't match\r\nwith the inputted password.";
                 return;
-            } else if(!(Utils.isValidEmail(email)))
+            } 
+            //if the email format is valid
+            else if(!(Utils.isValidEmail(email)))
             {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "Email format does not have proper format!";
                 return;
-            } else if(!(checkBoxCustomer) && !(checkBoxVendor))
+            } 
+            //if user not check either the vendor checkbox or the customer checkbox
+            else if(!(checkBoxCustomer) && !(checkBoxVendor))
             {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "Select at least one role!";
                 return;
-            } else if(!AreGroupBoxesValid(groupBoxCustomerDetails, groupBoxVendorDetails))
+            } 
+            //if there's an enabled groupBox, but the groupBox controls is empty
+            else if(!AreGroupBoxesValid(groupBoxCustomerDetails, groupBoxVendorDetails))
             {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "All columns must be filled!";
                 return;
-            } if(!Utils.IsCoordinateDigitValid(textBoxLatitudeCustomerSP, textBoxLongitudeSP, textBoxLatitudeCustomerSP, textBoxLongitudeCustomerSP))
+            } 
+
+            //if the coordinate is not valid
+            if(!Utils.IsCoordinateDigitValid(textBoxLatitudeCustomerSP, textBoxLongitudeSP, textBoxLatitudeCustomerSP, textBoxLongitudeCustomerSP))
             {
                 labelErrorSignUp.Visible = true;
                 labelErrorSignUp.Text = "Invalid coordinate format. Use numbers like - 6.178 or 106.762";
@@ -144,6 +161,7 @@ namespace GroceerLKS
             //select the existing phone number in order to avoid duplicate data
             var existingPhoneNumber = (from s in db.users where (s.phone_number == phoneNumber) select s.phone_number).FirstOrDefault();
 
+            //if the phone number already exist
             if(existingPhoneNumber == phoneNumber)
             {
                 labelErrorSignUp.Visible = true;
@@ -217,7 +235,8 @@ namespace GroceerLKS
             using(db)
             {
                 int newId = 1;
-                //first result from the order by descending id = last id
+                //first result from the order by descending id = last id, then use the FirstOrDefault to get the first data.
+                //for example, id -> 1,2,3,4. OrderByDescending makes the id -> 4,3,2,1. FirstOrDefault only select 4 -> 4 is the last ID
                 var lastUser = (from s in db.users.OrderByDescending(u => u.id) select s.id).FirstOrDefault();
 
                 //use this if the current post program returns an error

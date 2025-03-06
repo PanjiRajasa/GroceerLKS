@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GroceerLKS
-{
+{   
+    //to store the active product
     public class ActiveProduct
     {
         private DataClasses1DataContext db = new DataClasses1DataContext(); //data context -> connect to the database
@@ -25,7 +26,7 @@ namespace GroceerLKS
             //Here I use the join query to combine product + user + categories with some selections
 
             //from the products table, join it with the users table on vendor id from the products table equal to the id from the user, then join it with the categories table on category id from the products table equal to the user id from the users table
-            //where (criteria that indicate whether the products is active or not, is_active from the products table == 1, unit_stock from the products table more than 0 -> unit_stock > 0, and the last, vendor_active status is == 1 from the users table
+            //where (criteria that indicate whether the products is active or not, is_active from the products table == 1, unit_stock from the products table more than 0 -> unit_stock > 0, and the last, vendor_active status == 1 from the users table
             //then we will display a new object which contains vendor_name,product_name,name (category), unit_type, price_per_unit, unit_stock
             activeProduct = from p in db.products
                             join v in db.users on p.vendor_id equals v.id
@@ -34,6 +35,7 @@ namespace GroceerLKS
                             && p.unit_stock > 0
                             && v.vendor_active == 1
                             && v.id != SessionManager.ID //if we login as customer that also has an active vendor role, our products won't be displayed
+                            //customize what we will display to the dataGridView
                             select new
                             {
                                 productID = p.id,
