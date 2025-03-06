@@ -72,7 +72,7 @@ namespace GroceerLKS
         //product ID
         private int productID = -1; //-1 berarti tidak ada yang pilih
 
-        //when the cells clicked
+        //when the dataGridView cells clicked
         private void dataGridViewVendor_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //show the disabled buttons
@@ -162,22 +162,22 @@ namespace GroceerLKS
             }
         }
 
-        //when the user press the cancel button, they will back to main form
+        //when the user press the cancel button, they will back to main form and every changes will be cancelled
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             //cancel logic
             try
             {
-                db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.products); //refresh DB
+                db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.products); //refresh DB and cancel the new changes
                 RefreshUI(); //refresh UI
 
                 //debug
-                MessageBox.Show("success cancel");
+                //MessageBox.Show("success cancel");
                 Console.WriteLine("Success cancel");
             } catch (Exception ex)
             {   
                 //debug
-                MessageBox.Show("" + ex);
+                //MessageBox.Show("" + ex);
                 Console.WriteLine(ex);
             }
             
@@ -197,13 +197,13 @@ namespace GroceerLKS
                 ClearFormInputs();
 
                 //succesfully message for debug
-                MessageBox.Show("Semua perubahan berhasil disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Semua perubahan berhasil disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (Exception ex)
             {
                 //messagebox for debug
-                MessageBox.Show("Terjadi kesalahan saat menyimpan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Terjadi kesalahan saat menyimpan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.WriteLine(ex);
                 //if error occurs, then we will refresh the data
                 db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.products);
@@ -459,7 +459,7 @@ namespace GroceerLKS
             //for debugging
             if(productID == -1)
             {
-                MessageBox.Show("select product first!");
+                //MessageBox.Show("select product first!");
                 return;
             }
 
@@ -472,13 +472,13 @@ namespace GroceerLKS
                 {
                     selectedProduct.deleted_at = DateTime.Now;
                     //debug
-                    MessageBox.Show("Success Delete");
+                    //MessageBox.Show("Success Delete");
                 }
 
             } catch (Exception ex)
             {
                 //for debug
-                MessageBox.Show("Error occurs: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Error occurs: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             //if there's no error

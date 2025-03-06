@@ -27,9 +27,8 @@ namespace GroceerLKS
 
             //disabled the error label by default
             labelError.Visible = false;
-            //disabled the button buy and clear by default
+            //disabled the button buy 
             buttonBuy.Enabled = false;
-            buttonClear.Enabled = false;
 
             //product details groupBox will always be disabled
             groupBoxDetails.Enabled = false;
@@ -52,6 +51,8 @@ namespace GroceerLKS
             //hide the coordinate column
             dataGridViewProducts.Columns["vendor_latitude"].Visible = false;
             dataGridViewProducts.Columns["vendor_longitude"].Visible = false;
+
+            //hide the ID column
             dataGridViewProducts.Columns["productID"].Visible = false;
             dataGridViewProducts.Columns["vendorID"].Visible = false;
 
@@ -71,12 +72,14 @@ namespace GroceerLKS
 
         //display the data products inside the details & transactional groupBox when you clicked the gridView CellClick event
         private void dataGridViewProducts_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
+        {   
+            // 'e' is a variable which contains the information of the cell that was clicked in the DataGridView
+
             //show the buy button
             buttonBuy.Enabled = true;
 
             //make sure that clicked row is valid
-            if(e.RowIndex >= 0) //not a minus index
+            if(e.RowIndex >= 0) //not a minus index, minus index will make the program crash
             {
                 // DataGridViewRow -> An object that represents a row inside a DataGridView in Windows Forms (WinForms).
                 // Here, we create an instance of that object and store it inside the 'row' variable.
@@ -110,8 +113,8 @@ namespace GroceerLKS
 
                 //price per unit numericUpDown
 
-                //in order to avoid exception range bugs, here we will set the minimum and maximum value of the numericUpDown value based on the minimum and maximum value, here I'll use 1 ad the minimal value and then infinity value as the maximum value
-                decimal minimalValue = 1;
+                //To avoid exception range bugs, here we will set the minimum and maximum value of the numericUpDown value based on the minimum and maximum value, here I'll use 1 ad the minimal value and then infinity value as the maximum value
+                decimal minimalValue = 0;
                 decimal maxValue = decimal.MaxValue; //decimal.MaxValue -> infinity
 
                 //assign the minimalValue and the maximumValue to the Minimum and Maximum properties
@@ -126,9 +129,9 @@ namespace GroceerLKS
 
                 //The logic of this component is same just like how the price per unit's numericUpDown works
 
-                //determine the maximum and minimum values
-                decimal minimalUnit = db.products.Min(p => Convert.ToDecimal(p.unit_stock));
-                decimal maxUnit = db.products.Max(p => Convert.ToDecimal(p.unit_stock));
+                //determine the maximum and minimum values, same explanation like how the previous numeric up down minimum and maximum value logic
+                decimal minimalUnit = 0;
+                decimal maxUnit = decimal.MaxValue;
 
                 //determine the number of digits after the decimal point of the numeric up down unitStock
                 //NumericUpDown by default only handles integers, so decimal values ​​will be rounded automatically.
@@ -142,8 +145,8 @@ namespace GroceerLKS
                 //assign the row.Cells["unit_stock"] value to the numericUpDown, here we also need to convert it to the decimal first
                 numericUpDownDetailsUnitStock.Value = Convert.ToDecimal(row.Cells["unit_stock"].Value);
 
-                //numeric up down quantity minimum value, avoid user buys negative items (-1,-2, so on)
-                numericUpDownQuantity.Minimum = 1;
+                //numeric up down quantity minimum value, avoid user buys negative items (-1,-2, and so on)
+                numericUpDownQuantity.Minimum = 0;
 
                 //update the label total transaction
                 CalculateTotalTransaction();
@@ -152,10 +155,10 @@ namespace GroceerLKS
                 //first we need the user's data
                 var user = (from s in db.users where s.phone_number == SessionManager.PhoneNumber select s).FirstOrDefault();
 
-                //second, to use the vendor's coordinate data, we will use the vendor coordinate column's data, but we will store it inside the condition if the user is not null
+                //calculate the delivery cost
                 if (user != null)
                 {
-                    //coordinate
+                    //for the coordinates, we use the cells value
                     decimal vendorLatitude = Convert.ToDecimal(row.Cells["vendor_latitude"].Value);
                     decimal vendorLongitude = Convert.ToDecimal(row.Cells["vendor_longitude"].Value);
                     //for the customer's coordinate, we use the user variable data
@@ -167,9 +170,9 @@ namespace GroceerLKS
                     labelDeliveryCost.Text = distance.ToString();
                 }
 
-                //productID
+                //global productID variable saves the product's id
                 productID = int.Parse(row.Cells["productID"].Value.ToString());
-                //vendorID
+                //global vendorID variable saves the vendor's id
                 vendorID = int.Parse(row.Cells["vendorID"].Value.ToString());
             }
         }
@@ -179,8 +182,8 @@ namespace GroceerLKS
         private void buttonBuy_Click(object sender, EventArgs e)
         {
             //numericUpDownQuantity logic
-            //if the numeric up down value is higher than the unit stock numeric up down value
-            //if user try to buy a product but with quantity that higher than the product stock
+            //if the numeric up down quantity value is higher than the unit stock numeric up down value (user try to buy a product but with quantity that higher than the product stock -> returns an error)-> returns an error
+
             if (numericUpDownQuantity.Value > numericUpDownDetailsUnitStock.Value)
             {
                 labelError.Visible = true;
@@ -216,7 +219,7 @@ namespace GroceerLKS
 
             if (transaction != null)
             {
-                transaction.id = (db.users.OrderByDescending(s => s.id).Select(s => s.id).FirstOrDefault()) + 1;
+                transaction.id = (db.users.OrderByDescending(s => s.id).Select(s => s.id).FirstOrDefault()) + 1; //select the last ID then increment it (+1)
                 transaction.status = "pending";
                 transaction.total_price = Convert.ToDecimal(labelTotal.Text);
                 transaction.quantity = (double)numericUpDownQuantity.Value;
@@ -239,11 +242,20 @@ namespace GroceerLKS
                     selectedProduct.unit_stock -= transaction.quantity;
                 }
 
-                //insert the new data to the database
-                db.transactions.InsertOnSubmit(transaction);
+                //insert and submit the data. We use the try catch block to avoid bugs and errors
+                try
+                {
+                    //insert the new data to the database
+                    db.transactions.InsertOnSubmit(transaction);
 
-                //submit to the database
-                db.SubmitChanges();
+                    //submit to the database
+                    db.SubmitChanges();
+
+                } catch (Exception ex)
+                {
+                    db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, db.transactions); //refresh the db
+                    Console.WriteLine($"\n\n{ex.Message}\n\n"); //display the error inside the console (debugging purpose)
+                }
 
                 //refresh the dataGrid view
 
