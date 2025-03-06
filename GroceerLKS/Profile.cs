@@ -215,13 +215,13 @@ namespace GroceerLKS
             //customer data
             string cust_name = null;
             string cust_address = null;
-            double? cust_latitude = null;
-            double? cust_longitude = null;
+            double cust_latitude = 0.00;
+            double cust_longitude = 0.00;
             //vendor data
             string vendor_name = null;
             string vendor_address = null;
-            double? vendor_latitude = null;
-            double? vendor_longitude = null;
+            double vendor_latitude = 0.00;
+            double vendor_longitude = 0.00;
 
             //set the data based on whether the groupBoxes enabled or disabled
             //here, in the update logic, we will only update the data that changed, not everything beside what we changed
@@ -240,8 +240,8 @@ namespace GroceerLKS
             //wheter the groupBox enabled or not, the data will still remains even if we disable the role
             cust_name = textBoxCustomerName.Text;
             cust_address = richTextBoxCustomerAddress.Text;
-            cust_latitude = double.Parse(textBoxLatitudeCustomer.Text);
-            cust_longitude = double.Parse(textBoxLongitudeCustomer.Text);
+            double.TryParse(textBoxLatitudeCustomer.Text, out cust_latitude);
+            double.TryParse(textBoxLongitudeCustomer.Text, out cust_longitude);
 
             //if the groupBox vendor enabled
             if (groupBoxVendor.Enabled)
@@ -252,8 +252,8 @@ namespace GroceerLKS
             //wheter the groupBox enabled or not, the data will still remains even if we disable the role
             vendor_name = textBoxVendorName.Text;
             vendor_address = richTextBoxVendorAddress.Text;
-            vendor_latitude = double.Parse(textBoxLatitudeVendor.Text);
-            vendor_longitude = double.Parse(textBoxLongitudeVendor.Text);
+            double.TryParse(textBoxLatitudeVendor.Text, out vendor_latitude);
+            double.TryParse(textBoxLongitudeVendor.Text, out vendor_longitude);
 
             //update the user's data
             //if the user exist
